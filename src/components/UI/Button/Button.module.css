@@ -1,0 +1,28 @@
+@import url('../../../index.css');
+
+.button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--blue);
+    border: none;
+    &:hover {
+        background-color: var(--blue-hover);
+        color: #fff;
+    }
+}
+
+.active {
+    color: --blue;
+}
+
+.disabledButton {
+    background-color: #ECECEC; /* Серый фон */
+    cursor: not-allowed;
+    color: #888888;
+    &:hover {
+        background-color: #ECECEC;
+        color: #888888;
+    }
+  }

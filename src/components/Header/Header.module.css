@@ -1,0 +1,27 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #d3d3d3;
+    .header__logo {
+        text-transform: uppercase;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        
+        h1 {
+            font-weight: 700;
+        }
+
+        svg {
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    .header__auth {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+}
