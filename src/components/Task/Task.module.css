@@ -1,72 +1,78 @@
+@import url('../../index.css');
+
 .Task {
-    display: grid;
-    grid-template-columns: 50px 1fr 50px; /* Первый и третий элементы по 50px, второй - растягивается */
-    border: 2px solid #888888;
-    max-width: 560px;
-    padding: 10px 15px;
+  display: grid;
+  grid-template-columns: 50px 1fr 50px; /* Первый и третий элементы по 50px, второй - растягивается */
+  border: 2px solid #888888;
+  max-width: 560px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: 500;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  align-items: center;
+  justify-items: center;
+  cursor: grab;
+  p {
+    padding: 5px 15px;
+  }
+}
+
+.CompletedTasks,
+.CurrentTasks {
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  width: 550px;
+
+  .CompletedTasksItems,
+  .CurrentTasksItems {
+    border: 2px solid #000;
+    padding: 30px;
     border-radius: 10px;
-    font-weight: 500;
-    word-wrap: break-word;
-    word-break: break-word;
-    white-space: normal;
-    align-items: center;
-    justify-items: center;
-    p {
-        padding: 5px 15px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+  .CompletedTasksItems {
+    .Task {
+      text-decoration: line-through;
     }
-
+  }
 }
 
+.CompletedTasks {
 
-.CompletedTasks, .CurrentTasks {
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
+
+    img {
+        &:hover {
+            background-color: var(--blue-hover);
+        }
     }
-    width: 550px;
-
-    .CompletedTasksItems, .CurrentTasksItems {
-        border: 2px solid #000;
-        padding: 30px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column-reverse;
-        gap: 10px;
-
-
-    }
-    .CompletedTasksItems {.Task {
-        text-decoration: line-through;
-    }}
 }
-
-
 
 .CurrentTasks {
-    width: 550px;
+  width: 550px;
 
-
-    .CurrentTasksItems {
-        border: 2px solid #000;
-        padding: 30px;
-        border-radius: 10px;
-    }
+  .CurrentTasksItems {
+    border: 2px solid #000;
+    padding: 30px;
+    border-radius: 10px;
+  }
 }
 
 .Task__complete_back {
-    width: 30px;
-    height: 30px;
-    border: 2px solid #888888;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &:hover {
-        background-color: #63c27fd7;
-    }
-}
-
-.Task__back_to_tasks {
-    
+  width: 30px;
+  height: 30px;
+  border: 2px solid #888888;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: #63c27fd7;
+  }
 }
