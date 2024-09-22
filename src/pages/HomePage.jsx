@@ -4,29 +4,39 @@ import Container from "../Container";
 import cl from "../App.module.css";
 import { useState } from "react";
 import TaskList from "../components/Task/TaskList";
+import CompletedTasks from "../components/Task/CompletedTasks";
+
 const HomePage = () => {
-  const [taskList, setTaskList] = useState([
-    {
-      id: 1,
-      text: "feed a dog",
-    },
-    {
-      id: 2,
-      text: "wash the dish",
-    },
-    {
-      id: 3,
-      text: "do homework",
-    },
-  ]);
+  
+  const [taskList, setTaskList] = useState([]);
+  const [completeTaskList, setCompleteTaskList] = useState([]);
+
   const [task, setTask] = useState("");
+
+
+
   const addTask = (newTask) => {
     setTaskList([...taskList, newTask]);
     setTask("")
   };
+
+  const completeTask = (completedTask) => {
+    setCompleteTaskList([...completeTaskList, completedTask])
+    remove(completedTask)
+  }
+
+  const backToComplete = (task) => {
+    setTaskList([...taskList, task])
+    setCompleteTaskList(completeTaskList.filter((el) => el.id !== task.id))
+  }
+
   const remove = (task) => {
     setTaskList(taskList.filter((el) => el.id !== task.id))
+
   }
+
+  
+
   return (
     <Container>
       <Header />
@@ -51,7 +61,10 @@ const HomePage = () => {
           </div>
         </section>
         <section className={cl.tasks}>
-            <TaskList remove={remove} taskList={taskList}/>
+            <TaskList complete={completeTask} remove={remove} taskList={taskList} />
+            
+            <CompletedTasks remove={remove} taskList={completeTaskList} backToComplete={backToComplete}/>
+            
         </section>
       </main>
     </Container>
