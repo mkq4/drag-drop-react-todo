@@ -3,58 +3,11 @@ import cl from "./Task.module.css";
 import trash from "../../assets/images/trash.svg";
 import arrow from "../../assets/images/arrow.svg";
 import checkbox from "../../assets/images/checkbox.svg";
-import { useState } from "react";
 
-const Task = ({ task, remove, complete, back, backToComplete, setTaskList, taskList }) => {
-
-  const [currentTask, setCurrentTask] = useState('')
-
-  
-  function dragStartHandler(e, task) {
-    console.log('drag', task)
-    setCurrentTask(task) // не меняется карточка
-  }
-  
-  
-  
-  function dragEndHandler(e) {
-    // e.target.style.background = "#fff"
-  }
-  function dragOverHandler(e) {
-    e.preventDefault()
-    // e.target.style.background = "#000"
-  }
-
-  function dragLeaveHandler (e) {
-
-  }
-
-  function dropHandler(e, task) {
-    e.preventDefault()
-    // console.log('drop', task)
-    console.log(currentTask)
-    setTaskList(taskList.map(c => {
-      if (c.id === task.id) {
-        return {...c, order: currentTask.order}
-      }
-      if(c.id === currentTask.id) {
-        return {...c, order: task.order}
-      }
-
-      return c
-    }))
-  }
-
-
+const Task = ({ task, remove, complete, back, backToComplete, isHovered }) => {
   return (
     <div
-      draggable
-      className={cl.Task}
-      onDragStart={(e) => dragStartHandler(e, task)}
-      onDragLeave={(e) => dragLeaveHandler(e)}
-      onDragEnd={(e) => dragEndHandler(e)}
-      onDragOver={(e) => dragOverHandler(e)}
-      onDrop={(e) => dropHandler(e, task)}
+      className={`${cl.Task} ${isHovered ? cl.TaskHovered : ""}`} // Добавляем класс при наведении
     >
       {back ? (
         <img

@@ -76,3 +76,8 @@
     background-color: #63c27fd7;
   }
 }
+
+.TaskHovered, .TaskHovered p {
+  background-color: #dadada; /* Цвет фона при наведении */
+  transition: background-color 0.3s ease;
+}
