@@ -42,24 +42,25 @@ const HomePage = () => {
   };
 
   const onDragStart = (taskId) => {
+    console.log("onDragStart")
     setDraggedTask(taskId);
   };
 
   const onDragOver = (event, taskId) => {
+    console.log("onDragOver")
     event.preventDefault();
     setHoveredTask(taskId);
   };
 
   const onDragOverCompleted = (event, taskId) => {
+    console.log("onDragOverCompleted")
     event.preventDefault();
     setHoveredCompletedTask(taskId);
     console.log("onDragOverCompleted")
   };
 
-//const targetItem = completeTaskList.find((task) => task.id === targetTaskId);
-
   const onDrop = (targetTaskId) => {
-    // Логика для обновления порядка текущих задач
+    console.log("onDrop")
     const draggedItem = taskList.find((task) => task.id === draggedTask);
     const targetItem = taskList.find((task) => task.id === targetTaskId);
 
@@ -139,8 +140,8 @@ const HomePage = () => {
               taskList={completeTaskList}
               backToComplete={backToComplete}
               onDragStart={onDragStart}
-              onDragOver={onDragOverCompleted} // Здесь функция должна быть
-              onDrop={onDropCompleted} // Здесь функция должна быть
+              onDragOver={onDragOverCompleted} 
+              onDrop={onDropCompleted}
               hoveredTask={hoveredCompletedTask}
             />
           )}
