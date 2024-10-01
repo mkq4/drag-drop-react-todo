@@ -8,9 +8,9 @@ import CompletedTasks from "../components/Task/CompletedTasks";
 
 const HomePage = () => {
   const [taskList, setTaskList] = useState([
-    { id: 1, order: 1, text: "vkinut snusik" },
-    { id: 2, order: 2, text: "shas bbI Gidru pouzat" },
-    { id: 3, order: 3, text: "eeeeee tbi nasvai ne trogai eeee" },
+    { id: 1, order: 1, text: "task1" },
+    { id: 2, order: 2, text: "task2" },
+    { id: 3, order: 3, text: "task3" },
   ]);
   const [completeTaskList, setCompleteTaskList] = useState([]);
   const [task, setTask] = useState("");
