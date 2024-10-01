@@ -15,8 +15,7 @@ const HomePage = () => {
   const [completeTaskList, setCompleteTaskList] = useState([]);
   const [task, setTask] = useState("");
   const [draggedTask, setDraggedTask] = useState(null);
-  const [hoveredTask, setHoveredTask] = useState(null);
-  const [hoveredCompletedTask, setHoveredCompletedTask] = useState(null);
+  const [draggedFromCompleted, setDraggedFromCompleted] = useState(false); // Новый флаг
 
   const addTask = (newTask) => {
     setTaskList([...taskList, newTask]);
@@ -41,60 +40,29 @@ const HomePage = () => {
     setCompleteTaskList(completeTaskList.filter((el) => el.id !== task.id));
   };
 
-  const onDragStart = (taskId) => {
-    console.log("onDragStart")
+  const onDragStart = (taskId, fromCompleted = false) => {
     setDraggedTask(taskId);
+    setDraggedFromCompleted(fromCompleted);
   };
 
-  const onDragOver = (event, taskId) => {
-    console.log("onDragOver")
+  const onDragOver = (event) => {
     event.preventDefault();
-    setHoveredTask(taskId);
   };
 
-  const onDragOverCompleted = (event, taskId) => {
-    console.log("onDragOverCompleted")
-    event.preventDefault();
-    setHoveredCompletedTask(taskId);
-    console.log("onDragOverCompleted")
+  const onDrop = () => {
+    if (draggedFromCompleted) {
+      const movedTask = completeTaskList.find((task) => task.id === draggedTask);
+      setTaskList([...taskList, movedTask]);
+      removeCompletedTask(movedTask);
+    }
   };
 
-  const onDrop = (targetTaskId) => {
-    console.log("onDrop")
-    const draggedItem = taskList.find((task) => task.id === draggedTask);
-    const targetItem = taskList.find((task) => task.id === targetTaskId);
-
-    const newTaskList = taskList.map((task) => {
-      if (task.id === targetTaskId) {
-        return { ...task, order: draggedItem.order };
-      }
-      if (task.id === draggedTask) {
-        return { ...task, order: targetItem.order };
-      }
-      return task;
-    });
-
-    setTaskList(newTaskList.sort((a, b) => a.order - b.order));
-    setHoveredTask(null);
-  };
-
-  const onDropCompleted = (targetTaskId) => {
-    // Логика для обновления порядка завершенных задач
-    const draggedItem = completeTaskList.find((task) => task.id === draggedTask);
-    const targetItem = completeTaskList.find((task) => task.id === targetTaskId);
-
-    const newCompletedTaskList = completeTaskList.map((task) => {
-      if (task.id === targetTaskId) {
-        return { ...task, order: draggedItem.order };
-      }
-      if (task.id === draggedTask) {
-        return { ...task, order: targetItem.order };
-      }
-      return task;
-    });
-
-    setCompleteTaskList(newCompletedTaskList.sort((a, b) => a.order - b.order));
-    setHoveredCompletedTask(null);
+  const onDropCompleted = () => {
+    if (!draggedFromCompleted) {
+      const movedTask = taskList.find((task) => task.id === draggedTask);
+      setCompleteTaskList([...completeTaskList, movedTask]);
+      removeCurrentTask(movedTask);
+    }
   };
 
   return (
@@ -128,10 +96,9 @@ const HomePage = () => {
             complete={completeTask}
             remove={removeCurrentTask}
             taskList={taskList}
-            onDragStart={onDragStart}
+            onDragStart={(taskId) => onDragStart(taskId, false)}
             onDragOver={onDragOver}
             onDrop={onDrop}
-            hoveredTask={hoveredTask}
           />
 
           {completeTaskList.length > 0 && (
@@ -139,10 +106,9 @@ const HomePage = () => {
               remove={removeCompletedTask}
               taskList={completeTaskList}
               backToComplete={backToComplete}
-              onDragStart={onDragStart}
-              onDragOver={onDragOverCompleted} 
+              onDragStart={(taskId) => onDragStart(taskId, true)}
+              onDragOver={onDragOver}
               onDrop={onDropCompleted}
-              hoveredTask={hoveredCompletedTask}
             />
           )}
         </section>
