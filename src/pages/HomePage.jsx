@@ -113,9 +113,9 @@ const HomePage = () => {
             <Button
               onClick={() => {
                 addTask({
-                  id: taskList.length + 1,
+                  id: new Date().getMilliseconds(),
                   text: task,
-                  order: taskList.length + 1,
+                  order: new Date().getMilliseconds(),
                 });
               }}
             >

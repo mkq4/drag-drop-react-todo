@@ -1,6 +1,6 @@
 .container {
     margin: 0 auto;
-    width: 1230px;
+    max-width: 1230px;
     padding: 0 15px;
 }
 
@@ -17,10 +17,16 @@ main {
     align-items: center;
     gap: 20px;
     width: 560px;
+    @media (max-width: 590px) {
+        width: 100%;
+    }
 }
 
 .addTask__input {
     width: 560px;
+    @media (max-width: 590px) {
+        width: 100%;
+    }
 }
 
 .addTask__button {
@@ -38,4 +44,15 @@ main {
     width: 100%;
     padding: 0 100px;
     gap: 50px;
+
+    @media (max-width: 1024px) {
+        padding: 0 20px;
+    }
+    @media (max-width: 700px) {
+        flex-direction: column;
+        align-items: center;
+    }
+    @media (max-width: 490px) {
+        padding: 0;
+    }
 }

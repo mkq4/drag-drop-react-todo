@@ -13,7 +13,7 @@ const Task = ({ task, remove, complete, back, backToComplete, isHovered }) => {
         <img
           onClick={() => backToComplete(task)}
           src={arrow}
-          className={cl.Task__complete_back}
+          className={`${cl.Task__complete_back} ${cl.Task__complete_back_arrow}`}
         />
       ) : (
         <img

@@ -4,16 +4,27 @@ import authImgPath from "../../assets/images/auth.jpg";
 import Button from "../UI/Button/Button";
 import { Link } from "react-router-dom";
 import { registration } from "../../http/userAPI";
+import { useNavigate } from "react-router-dom";
 
 const RegistrationInner = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate()
 
   const isFormValid = email.trim() !== "" && password.trim() !== "";
 
   const signIn = async () => {
-    const response = await registration(email, password);
-    console.log(response)
+    try {
+      const response = await registration(email, password);
+      console.log(response); // Вывод ответа в консоль
+
+      localStorage.setItem('token', response.accessToken);
+      localStorage.setItem('user', JSON.stringify(response.user));
+      navigate('/')
+
+    } catch (error) {
+      console.error('Ошибка регистрации:', error);
+    }
   };
 
   return (
@@ -52,7 +63,9 @@ const RegistrationInner = () => {
               >
                 Зарегестририроваться
               </Button>
-              <Link to="/login">Уже есть аккаунт?</Link>
+              <div style={{textAlign: "center", marginTop: "5px"}}>
+                <Link to="/login">Уже есть аккаунт?</Link>
+              </div>
             </div>
           </form>
         </div>

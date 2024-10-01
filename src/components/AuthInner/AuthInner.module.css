@@ -1,70 +1,96 @@
 .AuthInner {
-    display: flex;
-    width: 100%;
-    height: 100%;
-
-    h1 {
-        font-weight: 800;
-        font-size: 32px;
-        color: #8C8C8C;
-        margin-bottom: 145px;
-
-        &:hover {
-            color: #000;
-        }
-    }
-
-    h2 {
-        font-weight: 700;
-        font-size: 32px;
-    }
-
-    p {
-        font-weight: 400;
-        font-size: 22px;
-    }
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
 }
 
 .AuthInner__image {
-    width: 50%;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
     height: 100%;
-}
-
-.AuthInner__content_form {
-    width: 360px;
 }
 
 .AuthInner__content {
     padding: 70px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    h1 {
+        font-weight: 800;
+        color: #8C8C8C;
+        margin-bottom: 145px;
+        &:hover {
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    }
+
+    h2 {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
 }
 
 .AuthInner__content_form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 30px;
-    .AuthInner__form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+    width: 100%;
+    max-width: 400px;
 
+    p {
+        font-size: 22px;
+        font-weight: 500;
+    }
 
-        .AuthInner__form_buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            a {
-                font-size: 18px;
-
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
+    form {
+        margin-top: 30px;
+        input {
+            width: 100%;
+        }
+        input + input {
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
     }
 }
 
-.AuthInner__content_form_registration {
-    max-width: 400px !important;
+.AuthInner__form_buttons {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+        &:hover {
+            font-weight: 500;
+            text-decoration: underline;
+            color: #000;
+        }
+    }
+}
+
+.errorMessage {
+    font-size: 18px;
+    text-align: center;
+    color: #F04444;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .AuthInner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .AuthInner__image {
+        display: none;
+    }
+
+    .AuthInner__content {
+        padding: 20px;
+    }
 }
