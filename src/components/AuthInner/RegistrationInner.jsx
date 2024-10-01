@@ -3,12 +3,18 @@ import cl from "./AuthInner.module.css";
 import authImgPath from "../../assets/images/auth.jpg";
 import Button from "../UI/Button/Button";
 import { Link } from "react-router-dom";
+import { registration } from "../../http/userAPI";
 
 const RegistrationInner = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const isFormValid = email.trim() !== "" && password.trim() !== "";
+
+  const signIn = async () => {
+    const response = await registration(email, password);
+    console.log(response)
+  };
 
   return (
     <div className={cl.AuthInner}>
@@ -17,7 +23,9 @@ const RegistrationInner = () => {
         <h1>
           <Link to="/">TODO</Link>
         </h1>
-        <div className={`${cl.AuthInner__content_form} ${cl.AuthInner__content_form_registration}`}>
+        <div
+          className={`${cl.AuthInner__content_form} ${cl.AuthInner__content_form_registration}`}
+        >
           <h2>Добро пожаловать</h2>
           <p>Пожалуйста зарегистрируйтесь для продолжения работы</p>
           <form className={cl.AuthInner__form} action="">
@@ -37,6 +45,10 @@ const RegistrationInner = () => {
               <Button
                 className={!isFormValid ? cl.disabledButton : ""}
                 disabled={!isFormValid}
+                onClick={(e) => {
+                  e.preventDefault()
+                  signIn()
+                }}
               >
                 Зарегестририроваться
               </Button>
