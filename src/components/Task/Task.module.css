@@ -4,7 +4,8 @@
   display: grid;
   grid-template-columns: 50px 1fr 50px; /* Первый и третий элементы по 50px, второй - растягивается */
   border: 2px solid #888888;
-  max-width: 560px;
+  width: 100%;
+  /* width: 450px; */
   padding: 10px 15px;
   border-radius: 10px;
   font-weight: 500;
@@ -67,6 +68,8 @@
 }
 
 .CompletedTasks {
+  max-width: 550px;
+
     img {
         &:hover {
             background-color: var(--blue-hover);
@@ -78,7 +81,7 @@
 }
 
 .CurrentTasks {
-  width: 550px;
+  max-width: 550px;
 
   .CurrentTasksItems {
     border: 2px solid #000;

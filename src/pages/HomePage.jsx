@@ -8,14 +8,15 @@ import CompletedTasks from "../components/Task/CompletedTasks";
 
 const HomePage = () => {
   const [taskList, setTaskList] = useState([
-    { id: 1, order: 1, text: "task1" },
-    { id: 2, order: 2, text: "task2" },
-    { id: 3, order: 3, text: "task3" },
+    { id: 1, order: 1, text: "vkinut snusik" },
+    { id: 2, order: 2, text: "shas bbI Gidru pouzat" },
+    { id: 3, order: 3, text: "eeeeee tbi nasvai ne trogai eeee" },
   ]);
   const [completeTaskList, setCompleteTaskList] = useState([]);
   const [task, setTask] = useState("");
   const [draggedTask, setDraggedTask] = useState(null);
-  const [draggedFromCompleted, setDraggedFromCompleted] = useState(false); // Новый флаг
+  const [hoveredTask, setHoveredTask] = useState(null);
+  const [hoveredCompletedTask, setHoveredCompletedTask] = useState(null);
 
   const addTask = (newTask) => {
     setTaskList([...taskList, newTask]);
@@ -40,28 +41,95 @@ const HomePage = () => {
     setCompleteTaskList(completeTaskList.filter((el) => el.id !== task.id));
   };
 
-  const onDragStart = (taskId, fromCompleted = false) => {
+  const onDragStart = (taskId) => {
     setDraggedTask(taskId);
-    setDraggedFromCompleted(fromCompleted);
   };
 
-  const onDragOver = (event) => {
+  const onDragEnd = () => {
+    setDraggedTask(null);
+    setHoveredTask(null);
+    setHoveredCompletedTask(null);
+  };
+
+  const onDragOver = (event, taskId) => {
     event.preventDefault();
+    setHoveredTask(taskId);
   };
 
-  const onDrop = () => {
-    if (draggedFromCompleted) {
-      const movedTask = completeTaskList.find((task) => task.id === draggedTask);
-      setTaskList([...taskList, movedTask]);
-      removeCompletedTask(movedTask);
+  const onDragOverCompleted = (event, taskId) => {
+    event.preventDefault();
+    setHoveredCompletedTask(taskId);
+  };
+
+  const onDragOverCompletedContainer = (event) => {
+    event.preventDefault();
+    setHoveredCompletedTask("container");
+  };
+
+  const onDragOverTaskListContainer = (event) => {
+    event.preventDefault();
+    setHoveredTask("container");
+  };
+
+  const onDrop = (targetTaskId) => {
+    const draggedItem = taskList.find((task) => task.id === draggedTask);
+    const targetItem = taskList.find((task) => task.id === targetTaskId);
+
+    if (!draggedItem || !targetItem || draggedItem.order === targetItem.order) {
+      setHoveredTask(null);
+      return;
+    }
+
+    const newTaskList = taskList.map((task) => {
+      if (task.id === targetTaskId) {
+        return { ...task, order: draggedItem.order };
+      }
+      if (task.id === draggedTask) {
+        return { ...task, order: targetItem.order };
+      }
+      return task;
+    });
+
+    setTaskList(newTaskList.sort((a, b) => a.order - b.order));
+    setHoveredTask(null);
+  };
+
+  const onDropCompleted = (targetTaskId) => {
+    const draggedItem = completeTaskList.find((task) => task.id === draggedTask);
+    const targetItem = completeTaskList.find((task) => task.id === targetTaskId);
+
+    if (!draggedItem || !targetItem || draggedItem.order === targetItem.order) {
+      setHoveredCompletedTask(null);
+      return;
+    }
+
+    const newCompletedTaskList = completeTaskList.map((task) => {
+      if (task.id === targetTaskId) {
+        return { ...task, order: draggedItem.order };
+      }
+      if (task.id === draggedTask) {
+        return { ...task, order: targetItem.order };
+      }
+      return task;
+    });
+
+    setCompleteTaskList(newCompletedTaskList.sort((a, b) => a.order - b.order));
+    setHoveredCompletedTask(null);
+  };
+
+  const onDropInCompletedContainer = () => {
+    const draggedItem = taskList.find((task) => task.id === draggedTask);
+    if (draggedItem) {
+      completeTask(draggedItem);
+      setHoveredCompletedTask(null);
     }
   };
 
-  const onDropCompleted = () => {
-    if (!draggedFromCompleted) {
-      const movedTask = taskList.find((task) => task.id === draggedTask);
-      setCompleteTaskList([...completeTaskList, movedTask]);
-      removeCurrentTask(movedTask);
+  const onDropInTaskListContainer = () => {
+    const draggedItem = completeTaskList.find((task) => task.id === draggedTask);
+    if (draggedItem) {
+      backToComplete(draggedItem);
+      setHoveredTask(null);
     }
   };
 
@@ -91,27 +159,43 @@ const HomePage = () => {
             </Button>
           </div>
         </section>
-        <section className={cl.tasks}>
+        <div className={cl.tasksSections}>
+        <section
+          className={cl.taskListContainer}
+          onDragOver={onDragOverTaskListContainer}
+          onDrop={onDropInTaskListContainer}
+        >
           <TaskList
             complete={completeTask}
             remove={removeCurrentTask}
             taskList={taskList}
-            onDragStart={(taskId) => onDragStart(taskId, false)}
+            onDragStart={onDragStart}
             onDragOver={onDragOver}
             onDrop={onDrop}
+            onDragEnd={onDragEnd}
+            hoveredTask={hoveredTask}
           />
+        </section>
 
+        <section
+          className={cl.completedTaskContainer}
+          onDragOver={onDragOverCompletedContainer}
+          onDrop={onDropInCompletedContainer}
+        >
           {completeTaskList.length > 0 && (
             <CompletedTasks
               remove={removeCompletedTask}
               taskList={completeTaskList}
               backToComplete={backToComplete}
-              onDragStart={(taskId) => onDragStart(taskId, true)}
-              onDragOver={onDragOver}
+              onDragStart={onDragStart}
+              onDragOver={onDragOverCompleted}
               onDrop={onDropCompleted}
+              onDragEnd={onDragEnd}
+              hoveredTask={hoveredCompletedTask}
             />
           )}
         </section>
+        </div>
       </main>
     </Container>
   );
