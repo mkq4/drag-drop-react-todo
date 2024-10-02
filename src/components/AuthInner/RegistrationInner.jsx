@@ -1,29 +1,28 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import cl from "./AuthInner.module.css";
 import authImgPath from "../../assets/images/auth.jpg";
 import Button from "../UI/Button/Button";
 import { Link } from "react-router-dom";
 import { registration } from "../../http/userAPI";
 import { useNavigate } from "react-router-dom";
-
+import { AuthContext } from "../../providers/AuthProvider"
 const RegistrationInner = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
-
+  const {userLogin} = useContext(AuthContext)
   const isFormValid = email.trim() !== "" && password.trim() !== "";
-
+  const [errorMessage, setErrorMessage] = useState('')
   const signIn = async () => {
     try {
       const response = await registration(email, password);
-      console.log(response); // Вывод ответа в консоль
-
-      localStorage.setItem('token', response.accessToken);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      console.log(response);
+      userLogin(response)
       navigate('/')
 
     } catch (error) {
       console.error('Ошибка регистрации:', error);
+      setErrorMessage(error.response.data.message)
     }
   };
 
@@ -68,6 +67,7 @@ const RegistrationInner = () => {
               </div>
             </div>
           </form>
+          <div className={cl.errorMessage}>{errorMessage}</div>
         </div>
       </div>
     </div>

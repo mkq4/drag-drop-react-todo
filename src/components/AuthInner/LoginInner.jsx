@@ -1,19 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import cl from "./AuthInner.module.css";
 import authImgPath from "../../assets/images/auth.jpg";
 import Button from "../UI/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../http/userAPI";
-
+import { AuthContext } from "../../providers/AuthProvider"
 const LoginInner = () => {
   const navigate = useNavigate();
+  const { userLogin } = useContext(AuthContext)
   const signUp = async () => {
     try {
       const response = await login(email, password);
-      console.log(response); // Вывод ответа в консоль
-
-      localStorage.setItem("token", response.accessToken);
-      localStorage.setItem("user", JSON.stringify(response.user));
+      console.log(response);
+      userLogin(response)
       navigate("/");
     } catch (error) {
       console.error("Ошибка регистрации:", error);
