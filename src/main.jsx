@@ -1,31 +1,18 @@
-import { StrictMode } from "react";
+import { createContext } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./pages/HomePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import RegistrationPage from "./pages/RegistrationPage.jsx";
-import AuthProvider from "./providers/AuthProvider.jsx";
+import UserStore from "./store/user.store.js";
+import { Providers } from "./providers";
+import App from "./App.jsx";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/registration",
-    element: <RegistrationPage />
-  }
-]);
+export const Context = createContext(null)
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </StrictMode>
+  <Context.Provider value={{
+    user: new UserStore()
+  }}>
+    <Providers>
+      <App/>
+    </Providers>
+  </Context.Provider>
 );

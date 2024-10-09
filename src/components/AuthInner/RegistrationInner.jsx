@@ -1,30 +1,17 @@
-import { useContext, useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useState } from "react";
 import cl from "./AuthInner.module.css";
 import authImgPath from "../../assets/images/auth.jpg";
 import Button from "../UI/Button/Button";
 import { Link } from "react-router-dom";
-import { registration } from "../../http/userAPI";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../providers/AuthProvider"
 const RegistrationInner = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
-  const {userLogin} = useContext(AuthContext)
   const isFormValid = email.trim() !== "" && password.trim() !== "";
   const [errorMessage, setErrorMessage] = useState('')
-  const signIn = async () => {
-    try {
-      const response = await registration(email, password);
-      console.log(response);
-      userLogin(response)
-      navigate('/')
 
-    } catch (error) {
-      console.error('Ошибка регистрации:', error);
-      setErrorMessage(error.response.data.message)
-    }
-  };
 
   return (
     <div className={cl.AuthInner}>
@@ -55,10 +42,6 @@ const RegistrationInner = () => {
               <Button
                 className={!isFormValid ? cl.disabledButton : ""}
                 disabled={!isFormValid}
-                onClick={(e) => {
-                  e.preventDefault()
-                  signIn()
-                }}
               >
                 Зарегестририроваться
               </Button>

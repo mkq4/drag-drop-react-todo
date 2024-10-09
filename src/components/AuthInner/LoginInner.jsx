@@ -1,30 +1,27 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import cl from "./AuthInner.module.css";
 import authImgPath from "../../assets/images/auth.jpg";
 import Button from "../UI/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../http/userAPI";
-import { AuthContext } from "../../providers/AuthProvider"
+import { useAuth } from "../../hook/useAuth.hook";
+import { useForm } from "react-hook-form";
+import { observer } from "mobx-react-lite";
+
 const LoginInner = () => {
   const navigate = useNavigate();
-  const { userLogin } = useContext(AuthContext)
-  const signUp = async () => {
-    try {
-      const response = await login(email, password);
-      console.log(response);
-      userLogin(response)
-      navigate("/");
-    } catch (error) {
-      console.error("Ошибка регистрации:", error);
-      setErrorMessage(error.response.data.message)
-    }
-  };
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: {isValid},
+  } = useForm({mode: "onChange"})
+  const { login } = useAuth(reset, navigate) 
+  // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState("")
 
-  const isFormValid = email.trim() !== "" && password.trim() !== "";
+  const sendForm = (data) => {
+    login(data)
+  }
 
   return (
     <div className={cl.AuthInner}>
@@ -36,27 +33,19 @@ const LoginInner = () => {
         <div className={cl.AuthInner__content_form}>
           <h2>Добро пожаловать</h2>
           <p>Пожалуйста авторизуйтесь для входа в систему</p>
-          <form className={cl.AuthInner__form} action="">
+          <form className={cl.AuthInner__form} action="" onSubmit={handleSubmit(sendForm)}>
             <input
               type="text"
-              placeholder="E-mail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email", {required: "ваша почта"})}
             />
             <input
               type="password"
-              placeholder="Пароль"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password", {required: "ваш пароль"})}
             />
             <div className={cl.AuthInner__form_buttons}>
               <Button
-                className={!isFormValid ? cl.disabledButton : ""}
-                disabled={!isFormValid}
-                onClick={(e) => {
-                  e.preventDefault()
-                  signUp()
-                }}
+                className={cl.disabledButton}
+                disabled={!isValid}
               >
                 Войти
               </Button>
@@ -70,4 +59,4 @@ const LoginInner = () => {
   );
 };
 
-export default LoginInner;
+export default observer(LoginInner);

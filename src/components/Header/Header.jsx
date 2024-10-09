@@ -1,36 +1,21 @@
+/* eslint-disable no-unused-vars */
 import MyLink from "../UI/Link/MyLink";
 import cl from "./Header.module.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { logout } from "../../http/userAPI";
 import Button from "../UI/Button/Button";
-const Header = () => {
-  const [isAuth, setIsAuth] = useState(false);
+import { Context } from "../../main";
+import { observer } from "mobx-react-lite";
+import { useAuth } from "../../hook/useAuth.hook";
+const Header = observer(() => {
   const [accountName, setAccountName] = useState("");
-
+  const {user} = useContext(Context)
+  const { logout } = useAuth()
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const email = user["email"];
-      // console.log(email);
-      setAccountName(email);
-      setIsAuth(true);
+    if(user.isAuth) {
+      setAccountName(user.user.email)
     }
-  }, []);
-
-  const accountLogout = () => {
-    try {
-      const response = logout()
-      if(response) {
-        localStorage.removeItem('user')
-        localStorage.removeItem('token')
-        setIsAuth(false)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
+  }, [])
   return (
     <header className={cl.header}>
       <div className={cl.header__logo}>
@@ -48,10 +33,10 @@ const Header = () => {
         </svg>
       </div>
       <div className={cl.header__auth}>
-        {isAuth ? (
+        {user.isAuth ? (
           <>
             <p style={{ fontSize: "20px", fontWeight: "bold" }}>{accountName}</p>
-            <Button onClick={() => accountLogout()}>Logout</Button>
+            <Button onClick={() => logout()}>Logout</Button>
           </>
         ) : (
           <>
@@ -63,6 +48,6 @@ const Header = () => {
       </div>
     </header>
   );
-};
+});
 
 export default Header;

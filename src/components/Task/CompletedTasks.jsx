@@ -23,7 +23,6 @@ const CompletedTasks = ({ taskList, remove, backToComplete, onDragStart, onDragO
               isHovered={hoveredTask === el.id} // Логика для hover
             />
           </div>
-
         ))}
       </div>
     </div>
