@@ -2,25 +2,31 @@
 import cl from "./Task.module.css";
 import trash from "../../assets/images/trash.svg";
 import arrow from "../../assets/images/arrow.svg";
-import checkbox from "../../assets/images/checkbox.svg";
-
-const Task = ({ task, remove, complete, back, backToComplete, isHovered }) => {
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+const Task = ({ task, id, remove, complete, back, backToComplete }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+    const style = { transform: CSS.Transform.toString(transform), transition };
   return (
     <div
-      className={`${cl.Task} ${isHovered ? cl.TaskHovered : ""}`} // Добавляем класс при наведении
+      className={cl.Task}
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
     >
       {back ? (
         <img
           onClick={() => backToComplete(task)}
           src={arrow}
-          className={`${cl.Task__complete_back} ${cl.Task__complete_back_arrow}`}
-        />
-      ) : (
-        <img
-          onClick={() => complete(task)}
-          src={checkbox}
           className={cl.Task__complete_back}
         />
+      ) : (
+        <div
+          onClick={() => complete(task)}
+          className={cl.Task__complete_back}
+        ></div>
       )}
 
       <p>{task.text}</p>

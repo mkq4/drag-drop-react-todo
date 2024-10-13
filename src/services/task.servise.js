@@ -1,21 +1,18 @@
-export const addTask = (taskList, newTask) => {
-  return [...taskList, newTask];
+export const addTask = (newTask, setTaskList, taskList, setTask) => {
+  setTaskList([...taskList, newTask]);
+  setTask("");
 };
 
-export const removeTask = (taskList, task) => {
-  return taskList.filter((el) => el.id !== task.id);
+export const completeTask = (completedTask, setCompleteTaskList, completeTaskList, setTaskList, taskList) => {
+  setCompleteTaskList([...completeTaskList, completedTask]);
+  setTaskList(taskList.filter((el) => el.id !== completedTask.id));
 };
 
-export const updateTaskOrder = (taskList, draggedTask, targetTask) => {
-  const newTaskList = taskList.map((task) => {
-    if (task.id === targetTask.id) {
-      return { ...task, order: draggedTask.order };
-    }
-    if (task.id === draggedTask.id) {
-      return { ...task, order: targetTask.order };
-    }
-    return task;
-  });
+export const backToComplete = (task, setTaskList, taskList, setCompleteTaskList, completeTaskList) => {
+  setTaskList([...taskList, task]);
+  setCompleteTaskList(completeTaskList.filter((el) => el.id !== task.id));
+};
 
-  return newTaskList.sort((a, b) => a.order - b.order);
+export const remove = (task, setTaskList, taskList) => {
+  setTaskList(taskList.filter((el) => el.id !== task.id));
 };
