@@ -4,10 +4,13 @@ import trash from "../../assets/images/trash.svg";
 import arrow from "../../assets/images/arrow.svg";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
 const Task = ({ task, id, remove, complete, back, backToComplete }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
-    const style = { transform: CSS.Transform.toString(transform), transition };
+
+  const style = { transform: CSS.Transform.toString(transform), transition };
+
   return (
     <div
       className={cl.Task}

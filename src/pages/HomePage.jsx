@@ -5,33 +5,56 @@ import cl from "../App.module.css";
 import { useState } from "react";
 import TaskList from "../components/Task/TaskList";
 import CompletedTasks from "../components/Task/CompletedTasks";
-import { addTask, completeTask, remove, backToComplete } from "../services/task.servise";
+import {
+  addTask,
+  completeTask,
+  remove,
+  backToComplete,
+} from "../services/task.servise";
 import { closestCorners, DndContext } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 
 const HomePage = () => {
   const [taskList, setTaskList] = useState([
-    {id: 1, text:"text"},
-    {id: 2, text:"text2"},
-    {id: 3, text:"text3"},
+    { id: 1, text: "text" },
+    { id: 2, text: "text2" },
+    { id: 3, text: "text3" },
   ]);
   const [completeTaskList, setCompleteTaskList] = useState([]);
 
   const [task, setTask] = useState("");
 
-  const getTaskPos = id => taskList.findIndex(task => task.id === id)
+  const getTaskPos = (id, list) => list.findIndex((task) => task.id === id);
 
-  const handleDragEnd = event => {
-    const {active, over} = event
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
 
-    if(active.id === over.id) return;
-    setTaskList(tasks => {
-    const originalPos = getTaskPos(active.id)
-    const newPos = getTaskPos(over.id)
+    // Проверяем, что active и over определены
+    if (!active || !over || active.id === over.id) return;
 
-    return arrayMove(tasks, originalPos, newPos)
-  })
-  }
+    // Проверяем, в каком списке находится перетаскиваемая задача
+    const activeTask = taskList.find((task) => task.id === active.id)
+      ? taskList
+      : completeTaskList;
+
+    const setActiveList =
+      activeTask === taskList ? setTaskList : setCompleteTaskList;
+
+    const getActivePos = (id) =>
+      activeTask === taskList
+        ? getTaskPos(id, taskList)
+        : getTaskPos(id, completeTaskList);
+
+    // Если active и over принадлежат разным спискам, используем разную логику
+    setActiveList((tasks) => {
+      const originalPos = getActivePos(active.id);
+      const newPos = getActivePos(over.id);
+
+      // if (originalPos === -1 || newPos === -1) return tasks; // Защита от ошибок
+
+      return arrayMove(tasks, originalPos, newPos);
+    });
+  };
 
   return (
     <Container>
@@ -48,7 +71,12 @@ const HomePage = () => {
           <div className={cl.addTask__button}>
             <Button
               onClick={() => {
-                addTask({ id: taskList.length + 1, text: task }, setTaskList, taskList, setTask);
+                addTask(
+                  { id: taskList.length + 1, text: task },
+                  setTaskList,
+                  taskList,
+                  setTask
+                );
               }}
             >
               Add task
@@ -56,18 +84,44 @@ const HomePage = () => {
           </div>
         </section>
         <section className={cl.tasks}>
-          <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
+          <DndContext
+            onDragEnd={handleDragEnd}
+            collisionDetection={closestCorners}
+          >
             <TaskList
-              complete={(task) => completeTask(task, setCompleteTaskList, completeTaskList, setTaskList, taskList)}
+              complete={(task) =>
+                completeTask(
+                  task,
+                  setCompleteTaskList,
+                  completeTaskList,
+                  setTaskList,
+                  taskList
+                )
+              }
               remove={(task) => remove(task, setTaskList, taskList)}
               taskList={taskList}
             />
           </DndContext>
-          <CompletedTasks
-            remove={(task) => remove(task, setCompleteTaskList, completeTaskList)}
-            taskList={completeTaskList}
-            backToComplete={(task) => backToComplete(task, setTaskList, taskList, setCompleteTaskList, completeTaskList)}
-          />
+          <DndContext
+            onDragEnd={handleDragEnd}
+            collisionDetection={closestCorners}
+          >
+            <CompletedTasks
+              remove={(task) =>
+                remove(task, setCompleteTaskList, completeTaskList)
+              }
+              taskList={completeTaskList}
+              backToComplete={(task) =>
+                backToComplete(
+                  task,
+                  setTaskList,
+                  taskList,
+                  setCompleteTaskList,
+                  completeTaskList
+                )
+              }
+            />
+          </DndContext>
         </section>
       </main>
     </Container>
@@ -75,3 +129,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
