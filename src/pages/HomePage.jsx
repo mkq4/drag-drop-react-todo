@@ -2,7 +2,7 @@ import Header from "../components/Header/Header";
 import Button from "../components/UI/Button/Button";
 import Container from "../Container";
 import cl from "../App.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskList from "../components/Task/TaskList";
 import CompletedTasks from "../components/Task/CompletedTasks";
 import {
@@ -16,11 +16,16 @@ import { arrayMove } from "@dnd-kit/sortable";
 
 const HomePage = () => {
   const [taskList, setTaskList] = useState([
-    { id: 1, text: "text" },
-    { id: 2, text: "text2" },
-    { id: 3, text: "text3" },
+    { id: Math.floor(new Date().getTime() / 1000), text: "text" },
+    { id: Math.floor(new Date().getTime() / 1000) + 2, text: "text2" },
+    { id: Math.floor(new Date().getTime() / 1000) + 1, text: "text3" },
   ]);
+  
   const [completeTaskList, setCompleteTaskList] = useState([]);
+  useEffect(() => {
+    console.log(taskList)
+    console.log(completeTaskList)
+  }, [taskList, completeTaskList])
 
   const [task, setTask] = useState("");
 
@@ -29,10 +34,8 @@ const HomePage = () => {
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
-    // Проверяем, что active и over определены
     if (!active || !over || active.id === over.id) return;
 
-    // Проверяем, в каком списке находится перетаскиваемая задача
     const activeTask = taskList.find((task) => task.id === active.id)
       ? taskList
       : completeTaskList;
@@ -45,12 +48,9 @@ const HomePage = () => {
         ? getTaskPos(id, taskList)
         : getTaskPos(id, completeTaskList);
 
-    // Если active и over принадлежат разным спискам, используем разную логику
     setActiveList((tasks) => {
       const originalPos = getActivePos(active.id);
       const newPos = getActivePos(over.id);
-
-      // if (originalPos === -1 || newPos === -1) return tasks; // Защита от ошибок
 
       return arrayMove(tasks, originalPos, newPos);
     });
@@ -71,12 +71,7 @@ const HomePage = () => {
           <div className={cl.addTask__button}>
             <Button
               onClick={() => {
-                addTask(
-                  { id: taskList.length + 1, text: task },
-                  setTaskList,
-                  taskList,
-                  setTask
-                );
+                addTask({id: Math.floor(new Date().getTime() / 1000) , text: task}, setTaskList, taskList, setTask)
               }}
             >
               Add task
