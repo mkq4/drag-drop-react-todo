@@ -1,5 +1,11 @@
+// Функция для обновления ID у задач по порядку
+const updateTaskIds = (tasks) => {
+  return tasks.map((task, index) => ({ ...task, id: index + 1 }));
+};
+
 export const addTask = (newTask, setTaskList, taskList, setTask) => {
-  setTaskList([...taskList, newTask]);
+  const updatedTaskList = [...taskList, newTask];
+  setTaskList(updateTaskIds(updatedTaskList)); // Перенумеровываем задачи
   setTask("");
 };
 
@@ -10,8 +16,11 @@ export const completeTask = (
   setTaskList,
   taskList
 ) => {
-  setCompleteTaskList([...completeTaskList, completedTask]);
-  setTaskList(taskList.filter((el) => el.id !== completedTask.id));
+  const updatedTaskList = taskList.filter((el) => el.id !== completedTask.id);
+  const updatedCompleteTaskList = [...completeTaskList, completedTask];
+
+  setTaskList(updateTaskIds(updatedTaskList)); // Перенумеровываем задачи
+  setCompleteTaskList(updateTaskIds(updatedCompleteTaskList));
 };
 
 export const backToComplete = (
@@ -21,17 +30,16 @@ export const backToComplete = (
   setCompleteTaskList,
   completeTaskList
 ) => {
-  console.log("task", task);
-  console.log("taskList before", taskList);
-  console.log("completeTaskList before", completeTaskList);
+  const updatedCompleteTaskList = completeTaskList.filter(
+    (el) => el.id !== task.id
+  );
+  const updatedTaskList = [...taskList, task];
 
-  setTaskList([...taskList, task]);
-  setCompleteTaskList(completeTaskList.filter((el) => el.id !== task.id));
-
-  console.log("taskList after", taskList);
-  console.log("completeTaskList after", completeTaskList);
+  setTaskList(updateTaskIds(updatedTaskList)); // Перенумеровываем задачи
+  setCompleteTaskList(updateTaskIds(updatedCompleteTaskList));
 };
 
 export const remove = (task, setTaskList, taskList) => {
-  setTaskList(taskList.filter((el) => el.id !== task.id));
+  const updatedTaskList = taskList.filter((el) => el.id !== task.id);
+  setTaskList(updateTaskIds(updatedTaskList)); // Перенумеровываем задачи
 };

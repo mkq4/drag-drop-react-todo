@@ -14,8 +14,15 @@
   white-space: normal;
   align-items: center;
   justify-items: center;
+  min-height: 50px;
+  max-height: 250px;
   p {
     padding: 5px 15px;
+  }
+
+  .Task__checkbox {
+    width: 25px;
+    height: 25px;
   }
 
   @media (max-width: 1024px) {
