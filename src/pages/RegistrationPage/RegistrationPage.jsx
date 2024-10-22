@@ -1,18 +1,29 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import cl from "./AuthInner.module.css";
 import authImgPath from "../../assets/images/auth.jpg";
-import Button from "../UI/Button/Button";
+import Button from "../../components/UI/Button/Button";
+import cl from "./RegistrationPage.module.css"
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-const RegistrationInner = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate()
-  const isFormValid = email.trim() !== "" && password.trim() !== "";
+import { useAuth } from "../../hook/useAuth.hook";
+import { useForm } from "react-hook-form";
+
+const RegistrationPage = () => {
+  const navigate = useNavigate();
+
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: {isValid},
+  } = useForm({mode: "onChange"})
+
   const [errorMessage, setErrorMessage] = useState('')
+  const {registration} = useAuth(reset, navigate)
 
-
+  const sendForm = (data) => {
+    registration(data)
+  }
   return (
     <div className={cl.AuthInner}>
       <img className={cl.AuthInner__image} src={authImgPath} alt="" />
@@ -25,23 +36,18 @@ const RegistrationInner = () => {
         >
           <h2>Добро пожаловать</h2>
           <p>Пожалуйста зарегистрируйтесь для продолжения работы</p>
-          <form className={cl.AuthInner__form} action="">
-            <input
+          <form className={cl.AuthInner__form} action="" onSubmit={handleSubmit(sendForm)}>
+          <input
               type="text"
-              placeholder="E-mail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email", {required: "ваша почта"})}
             />
             <input
               type="password"
-              placeholder="Пароль"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password", {required: "ваш пароль"})}
             />
             <div className={cl.AuthInner__form_buttons}>
               <Button
-                className={!isFormValid ? cl.disabledButton : ""}
-                disabled={!isFormValid}
+                disabled={!isValid}
               >
                 Зарегестририроваться
               </Button>
@@ -57,4 +63,5 @@ const RegistrationInner = () => {
   );
 };
 
-export default RegistrationInner;
+
+export default RegistrationPage

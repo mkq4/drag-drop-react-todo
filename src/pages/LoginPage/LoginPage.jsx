@@ -1,13 +1,16 @@
+
 import { useState } from "react";
-import cl from "./AuthInner.module.css";
+import cl from "./LoginPage.module.css"
 import authImgPath from "../../assets/images/auth.jpg";
-import Button from "../UI/Button/Button";
+import Button from "../../components/UI/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hook/useAuth.hook";
 import { useForm } from "react-hook-form";
 import { observer } from "mobx-react-lite";
 
-const LoginInner = () => {
+
+
+const LoginPage = () => {
   const navigate = useNavigate();
   const {
     reset,
@@ -22,9 +25,9 @@ const LoginInner = () => {
   const sendForm = (data) => {
     login(data)
   }
-
   return (
-    <div className={cl.AuthInner}>
+    <>
+          <div className={cl.AuthInner}>
       <img className={cl.AuthInner__image} src={authImgPath} alt="" />
       <div className={cl.AuthInner__content}>
         <h1>
@@ -44,7 +47,7 @@ const LoginInner = () => {
             />
             <div className={cl.AuthInner__form_buttons}>
               <Button
-                className={cl.disabledButton}
+
                 disabled={!isValid}
               >
                 Войти
@@ -56,7 +59,8 @@ const LoginInner = () => {
         </div>
       </div>
     </div>
-  );
-};
+    </>
+  )
+}
 
-export default observer(LoginInner);
+export default observer(LoginPage)

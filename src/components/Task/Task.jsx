@@ -7,8 +7,8 @@ import { CSS } from "@dnd-kit/utilities";
 const Task = ({ task, id, remove, complete, back, backToComplete }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
-  const style = { transform: CSS.Transform.toString(transform), transition };
-
+  const style = { transform: CSS.Transform.toString(transform), transition};
+  console.log(style)
   return (
     <div
       className={cl.Task}
@@ -31,12 +31,11 @@ const Task = ({ task, id, remove, complete, back, backToComplete }) => {
         onPointerDown={(e) => e.stopPropagation()}
       />
 
-      <p>{task.text}</p>
+      <p className={cl.Task__text}>{task.text}</p>
 
       <div className={cl.Task__nav}>
         <img
           onClick={() => remove(task)}
-          style={{ width: "30px", cursor: "pointer" }}
           src={trash}
           className={cl.Task__delete}
           onPointerDown={(e) => e.stopPropagation()}

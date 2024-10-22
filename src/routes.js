@@ -1,26 +1,26 @@
-import HomePage from "./pages/HomePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import RegistrationPage from "./pages/RegistrationPage.jsx";
+import HomePage from "./pages/HomePage/HomePage.jsx";
+import LoginPage from "./pages/LoginPage/LoginPage.jsx";
+import RegistrationPage from "./pages/RegistrationPage/RegistrationPage.jsx";
 import PrivatePage from "./pages/PrivatePage.jsx";
 
 export const privateRoutes = [
   {
     path: "/privatePage",
-    Component: PrivatePage, 
+    Component: PrivatePage,
   },
 ];
 
 export const publicRoutes = [
   {
     path: "/",
-    Component: HomePage, 
+    Component: HomePage,
   },
   {
     path: "/login",
-    Component: LoginPage, 
+    Component: LoginPage,
   },
   {
     path: "/registration",
-    Component: RegistrationPage, 
+    Component: RegistrationPage,
   },
 ];

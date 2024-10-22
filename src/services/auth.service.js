@@ -13,10 +13,11 @@ class AuthServices {
         return data
     }
 
-    async registration(dataFetch){
+    async registration(dataFetch, userStore){
         const {data} = await $host.post("/user/registration", dataFetch)
         if(data) {
             localStorage.setItem("accessToken", data?.accessToken)
+            userStore.setUser(data.user)
         }
         return data
     }

@@ -1,12 +1,10 @@
-@import url('../../index.css');
+@import url("../../index.css");
 
 .Task {
-  display: grid;
-  grid-template-columns: 50px 1fr 50px; /* Первый и третий элементы по 50px, второй - растягивается */
+  grid-template-columns: 50px 1fr 50px;
   border: 2px solid #888888;
-  width: 100%;
-  /* width: 450px; */
-  padding: 10px 15px;
+  /* width: 100%; */
+  width: 450px;
   border-radius: 10px;
   font-weight: 500;
   word-wrap: break-word;
@@ -16,15 +14,36 @@
   justify-items: center;
   min-height: 50px;
   max-height: 250px;
-  p {
-    padding: 5px 15px;
-  }
-
+  overflow: scroll;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
   .Task__checkbox {
     width: 25px;
     height: 25px;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+    cursor: pointer;
+  }
+  .Task__nav img {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translate(0, -50%);
   }
 
+  .Task__text {
+    padding: 10px 45px;
+  }
+
+
+  
   @media (max-width: 1024px) {
     p {
       padding: 0;
@@ -47,11 +66,11 @@
 
 .CompletedTasks,
 .CurrentTasks {
+  
   h2 {
     text-align: center;
     margin-bottom: 20px;
   }
-
 
   .CompletedTasksItems,
   .CurrentTasksItems {
@@ -76,14 +95,14 @@
 .CompletedTasks {
   max-width: 550px;
 
-    img {
-        &:hover {
-            background-color: var(--blue-hover);
-        }
+  img {
+    &:hover {
+      background-color: var(--blue-hover);
     }
-    @media (max-width: 590px) {
-      width: 100%;
-    }
+  }
+  @media (max-width: 590px) {
+    width: 100%;
+  }
 }
 
 .CurrentTasks {
@@ -116,10 +135,16 @@
   &:hover {
     background-color: #63c27fd7;
   }
-
 }
 
-.TaskHovered, .TaskHovered p {
+.TaskHovered,
+.TaskHovered p {
   background-color: #dadada; /* Цвет фона при наведении */
   transition: background-color 0.3s ease;
+}
+
+@media (max-width: 1120px) {
+  .Task {
+    width: 100% !important;
+  }
 }

@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import MyLink from "../UI/Link/MyLink";
 import cl from "./Header.module.css";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -40,9 +39,8 @@ const Header = observer(() => {
           </>
         ) : (
           <>
-            {" "}
-            <MyLink path="/login">Login</MyLink>{" "}
-            <MyLink path="/registration">Registration</MyLink>{" "}
+            <Link to="/login">Login</Link>
+            <Link to="/registration">Registration</Link>
           </>
         )}
       </div>
