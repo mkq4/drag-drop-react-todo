@@ -7,11 +7,13 @@ import Task from "./Task";
 import cl from "./Task.module.css";
 
 const TaskList = ({ taskList, remove, complete, setTaskList }) => {
+  if (!taskList.length) {
+    return <></>;
+  }
   return (
     <div className={cl.CurrentTasks}>
       <h2>Current tasks</h2>
       <div className={cl.CurrentTasksItems}>
-        {/* Убрано условие с выводом "there's nothing" */}
         <SortableContext items={taskList} strategy={verticalListSortingStrategy}>
           {taskList.map((el) => (
             <Task
